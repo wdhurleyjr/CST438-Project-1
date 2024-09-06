@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StatusBar } from 'react-native';
-import { loginStyles as styles } from '../styles/loginStyles';
+import { loginStyles as styles } from '../styles/LoginStyles';
 
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
