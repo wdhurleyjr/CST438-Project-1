@@ -7,7 +7,6 @@ export default function App() {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // You can add authentication logic here
     if (username === 'admin' && password === 'password') {
       Alert.alert('Login Successful', `Welcome, ${username}!`);
     } else {
@@ -24,7 +23,7 @@ export default function App() {
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
-        testID="usernameInput" // Added testID
+        testID="usernameInput"
       />
 
       <TextInput
@@ -33,11 +32,11 @@ export default function App() {
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-        testID="passwordInput" // Added testID
+        testID="passwordInput" 
       />
 
       <View style={styles.buttonContainer}>
-        <Button title="Login" onPress={handleLogin} testID="loginButton" /> {/* Added testID */}
+        <Button title="Login" onPress={handleLogin} testID="loginButton" /> 
       </View>
 
       <StatusBar style="auto" />
