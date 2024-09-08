@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StatusBar } from 'react-native';
 import { loginStyles as styles } from '../styles/LoginStyles';
 
-const LoginScreen = () => {
+const LoginScreen = ( {navigation} ) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -37,6 +37,10 @@ const LoginScreen = () => {
 
       <View style={styles.buttonContainer}>
         <Button title="Login" onPress={handleLogin} testID="loginButton" />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button title="Teams" onPress={() => navigation.navigate('MultiTeam')} testID="TeamsButton" />
       </View>
 
       <StatusBar style="auto" />

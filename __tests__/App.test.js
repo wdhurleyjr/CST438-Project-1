@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import LoginScreen from '../src/screens/LoginScreen';  
 import { Alert } from 'react-native';
+import MultiTeamScreen from '../src/screens/MultiTeamScreen'; 
 
 jest.mock('react-native/Libraries/Alert/Alert', () => ({
   alert: jest.fn(),
@@ -47,6 +48,25 @@ describe('LoginScreen', () => {
 
     expect(Alert.alert).toHaveBeenCalledWith('Login Failed', 'Invalid username or password');
   });
+});
+
+
+describe('MultiTeamScreen', () => {
+  it('renders the Teams screen correctly', () => {
+    const { getByTestId } = render(<MultiTeamScreen />);
+
+    expect(getByTestId('logoutButton')).toBeTruthy();
+  });
+
+  it('triggers a successful logout alert', () => {
+    const { getByTestId } = render(<MultiTeamScreen />);
+
+    fireEvent.press(getByTestId('logoutButton'));
+
+    expect(Alert.alert).toHaveBeenCalledWith('Logout Successful');
+
+  });
+
 });
 
 
