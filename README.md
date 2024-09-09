@@ -142,6 +142,11 @@ Once the development server is running, you can use the Expo Go app to view Stat
     ```
 5. Submit a pull request.
 
+## Contributors
+
+- William Hurley: [wdhurleyjr](https://github.com/wdhurleyjr)
+- Sebastian Santoyo: [SebasX5](https://github.com/SebasX5)
+- Mason Allred: [MasonA717](https://github.com/MasonA717)
 ## License
 
 StatLine is licensed under the MIT License.
