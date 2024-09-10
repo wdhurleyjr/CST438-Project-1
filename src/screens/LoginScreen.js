@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StatusBar } from 'react-native';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { loginStyles as styles } from '../styles/LoginStyles';
 
-const LoginScreen = ( {navigation} ) => {
+const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
     if (username === 'admin' && password === 'password') {
       Alert.alert('Login Successful', `Welcome, ${username}!`);
+      navigation.navigate('Landing'); 
     } else {
-      Alert.alert('Login Failed', 'Invalid username or password');
+      Alert.alert('Login Failed', 'Invalid username or password'); 
     }
   };
 
@@ -42,10 +43,9 @@ const LoginScreen = ( {navigation} ) => {
       <View style={styles.buttonContainer}>
         <Button title="Teams" onPress={() => navigation.navigate('MultiTeam')} testID="TeamsButton" />
       </View>
-
-      <StatusBar style="auto" />
     </View>
   );
 };
 
 export default LoginScreen;
+
