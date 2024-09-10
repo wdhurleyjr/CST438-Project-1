@@ -11,6 +11,9 @@ const LandingScreen = ({ navigation }) => {
         title="Logout"
         onPress={() => navigation.navigate('Login')} 
       />
+
+      <Button title="Teams" onPress={() => navigation.navigate('MultiTeam')} />
+
     </View>
   );
 };

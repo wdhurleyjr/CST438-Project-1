@@ -39,6 +39,7 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <Button title="Login" onPress={handleLogin} testID="loginButton" />
       </View>
+
     </View>
   );
 };
