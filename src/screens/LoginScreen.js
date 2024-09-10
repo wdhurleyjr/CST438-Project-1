@@ -40,9 +40,6 @@ const LoginScreen = ({ navigation }) => {
         <Button title="Login" onPress={handleLogin} testID="loginButton" />
       </View>
 
-      <View style={styles.buttonContainer}>
-        <Button title="Teams" onPress={() => navigation.navigate('MultiTeam')} testID="TeamsButton" />
-      </View>
     </View>
   );
 };
