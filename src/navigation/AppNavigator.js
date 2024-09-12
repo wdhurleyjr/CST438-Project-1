@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/LoginScreen';
 import LandingScreen from '../screens/LandingScreen';
 import LeagueScreen from '../screens/LeagueScreen';
-import TeamsScreen from '../screens/TeamsScreen';
+import TeamsScreen from '../screens/MutliTeamScreen';
 
 const Stack = createStackNavigator();
 
