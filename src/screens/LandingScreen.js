@@ -1,19 +1,42 @@
-import React from 'react';
-import { View, Text, Button } from 'react-native';
-import { landingStyles as styles } from '../styles/LandingStyles'; 
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, Button, Image } from 'react-native';
+import { landingStyles as styles } from '../styles/LandingStyles';
+import { validateAndCallApi } from '../services/Managers/apiManager';
 
 const LandingScreen = ({ navigation }) => {
+  const [leagues, setLeagues] = useState([]);
+
+  const handleFetchLeagues = () => {
+    validateAndCallApi('leagues', 'leagues', {}, (fetchedLeagues) => {
+      setLeagues(fetchedLeagues); 
+    });
+  };
+
+  useEffect(() => {
+    handleFetchLeagues(); 
+  }, []);
+
+  const renderLeagueItem = ({ item }) => (
+    <TouchableOpacity onPress={() => navigation.navigate('MultiTeam', { leagueId: item.id })}>
+      <View style={styles.leagueTile}>
+        <Image source={{ uri: item.logo }} style={styles.leagueLogo} />
+        <Text style={styles.itemText}>{item.name}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to StatLine!</Text>
       <Text style={styles.subtitle}>Your go-to app for tracking soccer teams.</Text>
-      <Button
-        title="Logout"
-        onPress={() => navigation.navigate('Login')} 
+      
+      <FlatList
+        data={leagues}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderLeagueItem}
       />
 
-      <Button title="Teams" onPress={() => navigation.navigate('MultiTeam')} />
-
+      <Button title="Logout" onPress={() => navigation.navigate('Login')} />
     </View>
   );
 };
