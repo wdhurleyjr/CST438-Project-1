@@ -99,7 +99,6 @@ Once the development server is running, you can use the Expo Go app to view Stat
 - `src/screens/`: Contains the different screens (pages) of the app.
 - `src/services/`: Contains the services for interacting with SQLite and API-FOOTBALL.
 - `src/styles/`: Contains stylesheets for the app.
-- `src/utils/`: Contains utility functions and helper modules.
 
 ### SQLite Integration
 - The app uses Expo SQLite to store soccer team and player data, along with user login information, locally on the device.
