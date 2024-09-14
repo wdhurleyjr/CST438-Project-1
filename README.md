@@ -24,7 +24,6 @@ StatLine is a React Native app designed to track soccer teams, providing users w
 - **Expo**: An open-source platform for building native apps using React Native.
 - **Expo SQLite**: A lightweight SQL database integrated with Expo for data persistence.
 - **API-FOOTBALL**: Provides real-time soccer data, including team details, match results, and player statistics.
-- **Axios**: A promise-based HTTP client used for making API requests.
 - **Babel**: JavaScript compiler to transpile modern ES6+ code into compatible JavaScript.
 - **Jest**: Testing framework for running unit and integration tests.
 - **JavaScript (ES6)**: Programming language used for the app logic.
