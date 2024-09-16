@@ -1,40 +1,48 @@
-import { getTeamsByLeague, insertTeam } from '../db';
+import { insertTeam } from '../db'; 
 
 const apiKey = '4a7813a829mshb8952297309bb32p1d35c1jsnc815c1dc5587';
 const apiUrl = 'https://api-football-v1.p.rapidapi.com/v3';
 
 export const fetchAndStoreTeamsIfNeeded = async (leagueId, setTeams) => {
-  getTeamsByLeague(leagueId, (teams) => {
-    if (teams.length > 0) {
+  try {
+    const response = await fetch(`${apiUrl}/teams?league=${leagueId}&season=2022`, {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': apiKey,
+        'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
+      }
+    });
+    
+    const data = await response.json();
+
+    if (data && data.response) {
+      const teams = data.response.map(team => {
+        const teamId = team.team.id;
+        const teamName = team.team.name;
+        const logo = team.team.logo;
+        const founded = team.team.founded || 'Unknown';
+        const venueName = team.venue?.name || 'Unknown';
+        const venueCity = team.venue?.city || 'Unknown';
+
+        insertTeam(teamId, teamName, logo, founded, venueName, venueCity, leagueId);
+
+        return {
+          id: teamId,
+          name: teamName,
+          logo: logo,
+          founded: founded,
+          venue_name: venueName,
+          venue_city: venueCity,
+        };
+      });
+
       setTeams(teams);
+      console.log('Teams fetched and stored successfully');
     } else {
-      fetch(`${apiUrl}/teams?league=${leagueId}&season=2023`, {
-        method: 'GET',
-        headers: {
-          'X-RapidAPI-Key': apiKey,
-          'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
-        },
-      })
-        .then(response => response.json())
-        .then(data => {
-          const teams = data.response;
-          teams.forEach(team => {
-            insertTeam(
-              team.team.id,
-              team.team.name,
-              team.team.logo,
-              team.team.founded,
-              team.venue.name,
-              team.venue.city,
-              leagueId
-            );
-          });
-          setTeams(teams);
-          console.log('Teams fetched and stored successfully');
-        })
-        .catch(error => {
-          console.log('Error fetching teams from API:', error);
-        });
+      console.log('No teams found in API response');
     }
-  });
+  } catch (error) {
+    console.error('Error fetching teams:', error);
+  }
 };
+

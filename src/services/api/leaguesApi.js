@@ -16,7 +16,6 @@ export const fetchAndStoreLeaguesIfNeeded = async (setLeagues) => {
     });
     
     const data = await response.json();
-    console.log("API Response:", data);
     
     if (data && data.response) {
       const leagues = data.response.filter(league => desiredLeagues.includes(league.league.id));
