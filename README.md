@@ -59,19 +59,13 @@ StatLine is a React Native app designed to track soccer teams, providing users w
     expo start
     ```
 
-6. **Install Axios**:
-    If Axios is not already installed, run:
-    ```bash
-    npm install axios
-    ```
-
-7. **Install Babel**:
+6. **Install Babel**:
     Ensure Babel is set up for transpiling ES6+ code. If Babel is not installed:
     ```bash
     npm install --save-dev @babel/core @babel/preset-env
     ```
 
-8. **Install Jest** (for testing):
+7. **Install Jest** (for testing):
     Install Jest to run the app’s unit tests:
     ```bash
     npm install --save-dev jest babel-jest @testing-library/react-native
