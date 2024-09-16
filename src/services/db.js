@@ -73,7 +73,7 @@ export const insertTeam = async (id, name, logo, founded, venue_name, venue_city
   );
   console.log('Team inserted successfully');
 };
-
+  
 export const getUsers = async (setUsers) => {
   const db = await openDatabase();
   const result = await db.execAsync('SELECT * FROM users');
