@@ -1,4 +1,4 @@
-import { getLeagues, insertLeague } from '../db';
+import { getSelectedLeagues, insertLeague } from '../db';
 
 const apiKey = '4a7813a829mshb8952297309bb32p1d35c1jsnc815c1dc5587';
 const apiUrl = 'https://api-football-v1.p.rapidapi.com/v3';
@@ -7,37 +7,28 @@ const desiredLeagues = [39, 40];
 
 export const fetchAndStoreLeaguesIfNeeded = async (setLeagues) => {
   try {
-    const response = await fetch(`${apiUrl}/leagues?country=England`, {
-      method: 'GET',
-      headers: {
-        'X-RapidAPI-Key': apiKey,
-        'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
-      }
-    });
+    const leaguesFromDb = await getSelectedLeagues();
     
-    const data = await response.json();
-    
-    if (data && data.response) {
-      const leagues = data.response.filter(league => desiredLeagues.includes(league.league.id));
-      for (const league of leagues) {
-        const leagueId = league.league.id;
-        const leagueName = league.league.name;
-        const country = league.country.name || 'Unknown';
-        const logo = league.league.logo;
-
-        await insertLeague(leagueId, leagueName, country, logo); 
-      }
-
-      setLeagues(leagues.map(l => ({
-        id: l.league.id,
-        name: l.league.name,
-        country: l.country.name,
-        logo: l.league.logo,
-      })));
+    if (leaguesFromDb.length === 0) {
+      console.log('No leagues found in database, calling API...');
       
-      console.log('Selected leagues fetched and stored successfully');
+      const response = await fetch('https://api-football-v1.p.rapidapi.com/v3/leagues?country=England', {
+        method: 'GET',
+        headers: {
+        },
+      });
+      const data = await response.json();
+      console.log('API response:', data);
+
+      for (const leagueInfo of data.response) {
+        const { id, name, logo } = leagueInfo.league;
+        const { name: country } = leagueInfo.country;
+        const season = leagueInfo.season || 2022;
+        await insertLeague(id, name, country, season, logo);
+        console.log(`Inserted league ${name} into the database`);
+      }
     } else {
-      console.log('No leagues found in API response');
+      setLeagues(leaguesFromDb);
     }
   } catch (error) {
     console.error('Error fetching leagues:', error);

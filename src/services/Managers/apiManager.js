@@ -3,14 +3,13 @@ import { fetchAndStoreTeamsIfNeeded } from '../api/teamsApi';
 
 export const validateAndCallApi = async (token, apiType, params, setResults) => {
   if (isValidToken(token)) {
+    console.log('Token is valid, calling the API for:', apiType);
+
     switch (apiType) {
       case 'leagues':
-        await fetchAndStoreLeaguesIfNeeded(setResults); 
+        await fetchAndStoreLeaguesIfNeeded(setResults);
         break;
-      case 'teams':
-        const { leagueId } = params;
-        await fetchAndStoreTeamsIfNeeded(leagueId, setResults); 
-        break;
+      // Handle other API types (e.g., teams) here...
       default:
         console.log('Invalid API type');
     }
@@ -22,3 +21,4 @@ export const validateAndCallApi = async (token, apiType, params, setResults) => 
 const isValidToken = (token) => {
   return token && token.length > 0;
 };
+

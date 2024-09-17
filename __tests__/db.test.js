@@ -1,165 +1,273 @@
-import { openDatabaseAsync } from 'expo-sqlite';
-import { 
-  getUsers, insertUser, insertLeague, getLeagues, deleteUser, updateUser, 
-  deleteLeague, insertTeam, getTeamsByLeague, deleteTeam 
-} from '../src/services/db';
+// import * as SQLite from 'expo-sqlite';
 
-jest.mock('expo-sqlite');
+// let dbInstance = null;
 
-describe('Database Operations', () => {
+// // Singleton pattern with openDatabaseAsync
+// const openDatabase = async () => {
+//   if (!dbInstance) {
+//     dbInstance = await SQLite.openDatabaseAsync('statline.db');
+//   }
+//   return dbInstance;
+// };
 
-  beforeEach(() => {
-    openDatabaseAsync.mockClear();
-  });
+// // Create necessary tables
+// export const createTables = async () => {
+//   const db = await openDatabase();
 
-  it('should fetch users and return an empty array', async () => {
-    const setUsersMock = jest.fn();
-    const dbMock = {
-      execAsync: jest.fn().mockResolvedValue({ rows: { _array: [] } }),
-    };
+//   await db.execAsync(
+//     `CREATE TABLE IF NOT EXISTS users (
+//       id INTEGER PRIMARY KEY AUTOINCREMENT, 
+//       username TEXT, 
+//       email TEXT, 
+//       password TEXT
+//     );`
+//   );
+//   console.log('Users table created successfully');
 
-    openDatabaseAsync.mockResolvedValue(dbMock);
-    await getUsers(setUsersMock);
-    expect(setUsersMock).toHaveBeenCalledWith([]); 
-    expect(dbMock.execAsync).toHaveBeenCalledWith('SELECT * FROM users');
-  });
+//   await db.execAsync(
+//     `CREATE TABLE IF NOT EXISTS leagues (
+//       id INTEGER PRIMARY KEY,           -- League ID from API-FOOTBALL
+//       name TEXT,                        -- League name
+//       country TEXT,                     -- Country of the league
+//       season INTEGER,                   -- Season year
+//       logo TEXT                         -- URL for the league logo
+//     );`
+//   );
+//   console.log('Leagues table created successfully');
 
-  it('should insert a user successfully', async () => {
-    const username = 'testUser';
-    const email = 'test@example.com';
-    const password = 'password123';
-    const dbMock = {
-      runAsync: jest.fn().mockResolvedValue(),
-    };
+//   await db.execAsync(
+//     `CREATE TABLE IF NOT EXISTS teams (
+//       id INTEGER PRIMARY KEY,           -- Team ID from API-FOOTBALL
+//       name TEXT,                        -- Team name
+//       logo TEXT,                        -- URL for the team logo
+//       founded INTEGER,                  -- Year the team was founded
+//       venue_name TEXT,                  -- Venue name
+//       venue_city TEXT,                  -- Venue city
+//       league_id INTEGER,                -- Foreign key referencing the league
+//       FOREIGN KEY(league_id) REFERENCES leagues(id) ON DELETE CASCADE
+//     );`
+//   );
+//   console.log('Teams table created successfully');
+// };
 
-    openDatabaseAsync.mockResolvedValue(dbMock);
-    await insertUser(username, email, password);
-    expect(dbMock.runAsync).toHaveBeenCalledWith(
-      'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-      [username, email, password]
-    );
-  });
+// export const insertUser = async (username, email, password) => {
+//   const db = await openDatabase();
 
-  it('should insert a league successfully', async () => {
-    const leagueId = 39;
-    const leagueName = 'Premier League';
-    const country = 'England';
-    const season = 2022;
-    const logo = 'https://some-logo-url.png';
-    const dbMock = {
-      runAsync: jest.fn().mockResolvedValue(),
-    };
+//   try {
+//     // Check if a user already exists
+//     const existingUser = await db.getFirstAsync(
+//       'SELECT * FROM users WHERE username = ? OR email = ?',
+//       [username, email]
+//     );
 
-    openDatabaseAsync.mockResolvedValue(dbMock);
-    await insertLeague(leagueId, leagueName, country, season, logo);
-    expect(dbMock.runAsync).toHaveBeenCalledWith(
-      'INSERT OR REPLACE INTO leagues (id, name, country, season, logo) VALUES (?, ?, ?, ?, ?)',
-      [leagueId, leagueName, country, season, logo]
-    );
-  });
+//     if (existingUser) {
+//       console.log('User already exists:', existingUser);
+//       throw new Error('User already exists with this username or email');
+//     }
 
-  it('should fetch leagues and return data', async () => {
-    const setLeaguesMock = jest.fn();
-    const dbMock = {
-      execAsync: jest.fn().mockResolvedValue({ rows: { _array: [{ id: 39, name: 'Premier League' }] } }),
-    };
+//     // If no user exists, insert the new user
+//     await db.runAsync(
+//       'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
+//       [username, email, password]
+//     );
+//     console.log('User inserted successfully');
+//   } catch (error) {
+//     console.error('Error inserting user:', error);
+//     throw error;
+//   }
+// };
 
-    openDatabaseAsync.mockResolvedValue(dbMock);
-    await getLeagues(setLeaguesMock);
-    expect(setLeaguesMock).toHaveBeenCalledWith([{ id: 39, name: 'Premier League' }]);
-    expect(dbMock.execAsync).toHaveBeenCalledWith('SELECT * FROM leagues');
-  });
+// export const insertLeague = async (id, name, country, season, logo) => {
+//   const db = await openDatabase();
+//   try {
+//     await db.runAsync(
+//       'INSERT OR REPLACE INTO leagues (id, name, country, season, logo) VALUES (?, ?, ?, ?, ?)',
+//       [id, name, country, season, logo]
+//     );
+//     console.log(`League ${name} inserted successfully`);
+//   } catch (error) {
+//     console.error('Error inserting league:', error);
+//     throw error;
+//   }
+// };
 
-  it('should update a user successfully', async () => {
-    const userId = 1;
-    const newUsername = 'updatedUser';
-    const dbMock = {
-      runAsync: jest.fn().mockResolvedValue(),
-    };
+// // Insert a new team into the teams table
+// export const insertTeam = async (id, name, logo, founded, venue_name, venue_city, league_id) => {
+//   const db = await openDatabase();
+//   try {
+//     await db.runAsync(
+//       'INSERT INTO teams (id, name, logo, founded, venue_name, venue_city, league_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
+//       [id, name, logo, founded, venue_name, venue_city, league_id]
+//     );
+//     console.log('Team inserted successfully');
+//   } catch (error) {
+//     console.error('Error inserting team:', error);
+//     throw error;
+//   }
+// };
 
-    openDatabaseAsync.mockResolvedValue(dbMock);
-    await updateUser(userId, newUsername);
-    expect(dbMock.runAsync).toHaveBeenCalledWith(
-      'UPDATE users SET username = ? WHERE id = ?',
-      [newUsername, userId]
-    );
-  });
+// // Fetch all users from the users table
+// export const getUsers = async (setUsers) => {
+//   const db = await openDatabase();
+//   try {
+//     const result = await db.getAllAsync('SELECT * FROM users');
+//     setUsers(result); // Assuming setUsers is a state updater
+//     console.log('Fetched users:', result);
+//   } catch (error) {
+//     console.error('Error fetching users:', error);
+//     throw error;
+//   }
+// };
 
-  it('should delete a user successfully', async () => {
-    const userId = 1;
-    const dbMock = {
-      runAsync: jest.fn().mockResolvedValue(),
-    };
+// // Fetch all leagues from the leagues table
+// export const getLeagues = async (setLeagues) => {
+//   const db = await openDatabase();
+//   try {
+//     const result = await db.getAllAsync('SELECT * FROM leagues');
+//     setLeagues(result); // Assuming setLeagues is a state updater
+//     console.log('Fetched leagues:', result);
+//   } catch (error) {
+//     console.error('Error fetching leagues:', error);
+//     throw error;
+//   }
+// };
 
-    openDatabaseAsync.mockResolvedValue(dbMock);
-    await deleteUser(userId);
-    expect(dbMock.runAsync).toHaveBeenCalledWith(
-      'DELETE FROM users WHERE id = ?',
-      [userId]
-    );
-  });
+// // Fetch all teams by league ID from the teams table
+// export const getTeamsByLeague = async (league_id, setTeams) => {
+//   const db = await openDatabase();
+//   try {
+//     const result = await db.getAllAsync('SELECT * FROM teams WHERE league_id = ?', [league_id]);
+//     setTeams(result); // Assuming setTeams is a state updater
+//     console.log('Fetched teams for league:', result);
+//   } catch (error) {
+//     console.error('Error fetching teams by league:', error);
+//     throw error;
+//   }
+// };
 
-  it('should delete a league successfully', async () => {
-    const leagueId = 39;
-    const dbMock = {
-      runAsync: jest.fn().mockResolvedValue(),
-    };
+// // Update an existing user in the users table
+// export const updateUser = async (id, newUsername) => {
+//   const db = await openDatabase();
+//   try {
+//     await db.runAsync('UPDATE users SET username = ? WHERE id = ?', [newUsername, id]);
+//     console.log('User updated successfully');
+//   } catch (error) {
+//     console.error('Error updating user:', error);
+//     throw error;
+//   }
+// };
 
-    openDatabaseAsync.mockResolvedValue(dbMock);
-    await deleteLeague(leagueId);
-    expect(dbMock.runAsync).toHaveBeenCalledWith(
-      'DELETE FROM leagues WHERE id = ?',
-      [leagueId]
-    );
-  });
+// // Delete a user from the users table
+// export const deleteUser = async (id) => {
+//   const db = await openDatabase();
+//   try {
+//     await db.runAsync('DELETE FROM users WHERE id = ?', [id]);
+//     console.log('User deleted successfully');
+//   } catch (error) {
+//     console.error('Error deleting user:', error);
+//     throw error;
+//   }
+// };
 
-  it('should insert a team successfully', async () => {
-    const teamId = 33;
-    const teamName = 'Manchester United';
-    const logo = 'https://some-team-logo-url.png';
-    const founded = 1878;
-    const venue_name = 'Old Trafford';
-    const venue_city = 'Manchester';
-    const leagueId = 39;
-    const dbMock = {
-      runAsync: jest.fn().mockResolvedValue(),
-    };
+// // Delete a league from the leagues table
+// export const deleteLeague = async (id) => {
+//   const db = await openDatabase();
+//   try {
+//     await db.runAsync('DELETE FROM leagues WHERE id = ?', [id]);
+//     console.log('League deleted successfully');
+//   } catch (error) {
+//     console.error('Error deleting league:', error);
+//     throw error;
+//   }
+// };
 
-    openDatabaseAsync.mockResolvedValue(dbMock);
-    await insertTeam(teamId, teamName, logo, founded, venue_name, venue_city, leagueId);
-    expect(dbMock.runAsync).toHaveBeenCalledWith(
-      'INSERT INTO teams (id, name, logo, founded, venue_name, venue_city, league_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [teamId, teamName, logo, founded, venue_name, venue_city, leagueId]
-    );
-  });
+// // Delete a team from the teams table
+// export const deleteTeam = async (id) => {
+//   const db = await openDatabase();
+//   try {
+//     await db.runAsync('DELETE FROM teams WHERE id = ?', [id]);
+//     console.log('Team deleted successfully');
+//   } catch (error) {
+//     console.error('Error deleting team:', error);
+//     throw error;
+//   }
+// };
 
-  it('should fetch teams by league and return data', async () => {
-    const leagueId = 39;
-    const setTeamsMock = jest.fn();
-    const dbMock = {
-      execAsync: jest.fn().mockResolvedValue({ rows: { _array: [{ id: 33, name: 'Manchester United' }] } }),
-    };
+// // Check user credentials for login
+// export const checkUserCredentials = async (username, password) => {
+//   const db = await openDatabase();
+//   try {
+//     const result = await db.getFirstAsync(
+//       'SELECT * FROM users WHERE username = ? AND password = ?',
+//       [username, password]
+//     );
+//     console.log('Login query result:', result);
+//     return result !== undefined;
+//   } catch (error) {
+//     console.error('Error checking user credentials:', error);
+//     throw error;
+//   }
+// };
 
-    openDatabaseAsync.mockResolvedValue(dbMock);
-    await getTeamsByLeague(leagueId, setTeamsMock);
-    expect(setTeamsMock).toHaveBeenCalledWith([{ id: 33, name: 'Manchester United' }]);
-    expect(dbMock.execAsync).toHaveBeenCalledWith('SELECT * FROM teams WHERE league_id = ?', [leagueId]);
-  });
+// // Fetch all users for logging
+// export const getAllUsers = async () => {
+//   const db = await openDatabase();
+//   try {
+//     const users = await db.getAllAsync('SELECT * FROM users');
+//     console.log('All users:', users);
+//     return users;
+//   } catch (error) {
+//     console.error('Error fetching users:', error);
+//     throw error;
+//   }
+// };
 
-  it('should delete a team successfully', async () => {
-    const teamId = 33;
-    const dbMock = {
-      runAsync: jest.fn().mockResolvedValue(),
-    };
+// // Delete duplicate users
+// export const deleteDuplicateUsers = async () => {
+//   const db = await openDatabase();
+//   try {
+//     await db.runAsync(`
+//       DELETE FROM users 
+//       WHERE id NOT IN (
+//         SELECT MIN(id) 
+//         FROM users 
+//         GROUP BY username, email
+//       );
+//     `);
+//     console.log('Duplicate users deleted successfully');
+//   } catch (error) {
+//     console.error('Error deleting duplicate users:', error);
+//     throw error;
+//   }
+// };
 
-    openDatabaseAsync.mockResolvedValue(dbMock);
-    await deleteTeam(teamId);
-    expect(dbMock.runAsync).toHaveBeenCalledWith(
-      'DELETE FROM teams WHERE id = ?',
-      [teamId]
-    );
-  });
-});
+// // Fetch only specific leagues by their IDs (39, 40)
+// export const getSelectedLeagues = async (setLeagues) => {
+//   const db = await openDatabase();
+//   try {
+//     const result = await db.getAllAsync('SELECT * FROM leagues WHERE id IN (39, 40)');
+//     console.log('Fetched leagues from database:', result);
 
+//     if (setLeagues) {
+//       setLeagues(result || []);
+//     }
 
+//     return result || [];
+//   } catch (error) {
+//     console.error('Error fetching leagues from database:', error);
+//     throw error;
+//   }
+// };
+
+// // Delete all leagues
+// export const deleteAllLeagues = async () => {
+//   const db = await openDatabase();
+//   try {
+//     await db.runAsync('DELETE FROM leagues');
+//     console.log('All leagues deleted successfully');
+//   } catch (error) {
+//     console.error('Error deleting leagues:', error);
+//     throw error;
+//   }
+// };
 

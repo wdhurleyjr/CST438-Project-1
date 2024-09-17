@@ -1,16 +1,16 @@
 import { StyleSheet } from 'react-native';
 
-export const loginStyles = StyleSheet.create({
+export const createAccountStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
   },
   title: {
     fontSize: 24,
     marginBottom: 16,
+    textAlign: 'center',
   },
   input: {
     width: '100%',
@@ -23,24 +23,19 @@ export const loginStyles = StyleSheet.create({
   buttonContainer: {
     width: '100%',
     marginVertical: 10,
+  },
+  button: {
+    backgroundColor: '#007bff',
+    padding: 10,
+    alignItems: 'center',
     borderRadius: 5,
-  },
-  createAccountContainer: {
-    marginTop: 20,
     width: '100%',
-    justifyContent: 'center',
   },
-  createAccountText: {
+  buttonText: {
+    color: '#fff',
     fontSize: 16,
-    color: '#000',
-    textAlign: 'center',
-  },
-  createAccountLink: {
-    fontSize: 16,
-    color: '#007bff',
-    textDecorationLine: 'underline',
   },
 });
 
 
-
+  

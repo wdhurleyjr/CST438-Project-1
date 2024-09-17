@@ -78,12 +78,9 @@ describe('fetchAndStoreTeamsIfNeeded', () => {
     fetch.mockImplementationOnce(() =>
       Promise.reject(new Error('API fetch failed'))
     );
-
     const leagueId = 39;
     const setTeamsMock = jest.fn();
-
     await fetchAndStoreTeamsIfNeeded(leagueId, setTeamsMock);
-
     expect(setTeamsMock).not.toHaveBeenCalled();
   });
 });
