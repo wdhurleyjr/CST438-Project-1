@@ -40,6 +40,15 @@ const LoginScreen = ({ navigation }) => {
         <Button title="Login" onPress={handleLogin} testID="loginButton" />
       </View>
 
+      <View style={styles.buttonContainer}>
+        <Button title="Don't have an account? Sign Up" 
+        onPress={() =>{ 
+            Alert.alert('Going to Sign Up');
+            navigation.navigate('SignUp');}
+        } 
+        testID="signUpButton" />
+      </View>
+
     </View>
   );
 };

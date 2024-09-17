@@ -44,3 +44,10 @@ test('triggers a failed login alert when the wrong credentials are entered', asy
   expect(mockNavigate).not.toHaveBeenCalled();
   expect(Alert.alert).toHaveBeenCalledWith('Login Failed', 'Invalid username or password');
 });
+
+test('allows users to go to sign up', async () => {
+  const { getByTestId } = render(<LoginScreen navigation={{ navigate: mockNavigate }} />);
+  fireEvent.press(getByTestId('signUpButton'));
+  expect(mockNavigate).toHaveBeenCalledWith('SignUp');
+  expect(Alert.alert).toHaveBeenCalledWith('Going to Sign Up');
+});
