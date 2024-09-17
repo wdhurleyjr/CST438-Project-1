@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { signUpStyles as styles } from '../styles/SignUpStyles';
-import { addUser } from '../services/db';  
+import { insertUser } from '../services/db';  
 import * as SQLite from 'expo-sqlite';
 
 const openDatabase = () => {
@@ -28,7 +28,7 @@ const SignUpScreen = ({ navigation }) => {
     }
 
     try {
-        await addUser(username, email, password);
+        await insertUser(username, email, password);
         Alert.alert('Sign Up Successful', `Account created: ${username}!`);
         navigation.navigate('Login'); 
     } catch (error) {
