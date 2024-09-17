@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
-import { SignUpStyles as styles } from '../styles/SignUpStyles';
-import { useSQLiteContext } from '../../__mocks__/expo-sqlite'; 
+import { signUpStyles as styles } from '../styles/SignUpStyles';
 import { addUser } from '../services/db';  
+import * as SQLite from 'expo-sqlite';
+
+const openDatabase = () => {
+  return  SQLite.openDatabaseAsync('statline.db');
+};
 
 const SignUpScreen = ({ navigation }) => {
 
@@ -10,17 +14,17 @@ const SignUpScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
-  const db= useSQLiteContext();
-  
 
 
   const handleSignUp = async () => {
+    // const db= openDatabase();
 
     if(username === '' || password === '' || email===''){
         Alert.alert('Sign Up Failed', 'Please fill out all the fields');
         return;
     }else if(password !==confirmPassword){
         Alert.alert('Sign Up Failed', 'Passwords must match');
+        return;
     }
 
     try {
@@ -31,8 +35,7 @@ const SignUpScreen = ({ navigation }) => {
         Alert.alert('Sign Up Failed', 'An error occured while creating the account');
         console.error('Signup Error: ', error);
     }
-
-    
+   
   };
 
   return (

@@ -3,6 +3,9 @@ import { render, fireEvent } from '@testing-library/react-native';
 import SignUpScreen from '../src/screens/SignUpScreen';  
 import { Alert } from 'react-native';
 
+import { openDatabaseAsync } from 'expo-sqlite';
+import {insertUser} from '../src/services/db';
+
 const mockNavigate = jest.fn();
 
 jest.spyOn(Alert, 'alert');
@@ -12,7 +15,6 @@ beforeEach(() => {
   mockNavigate.mockClear();
   Alert.alert.mockClear();
 });
-
 test('renders the sign up screen correctly', () => {
   const { getByTestId, getByPlaceholderText } = render(<SignUpScreen navigation={{ navigate: mockNavigate }} />);
   expect(getByTestId('signUpButton')).toBeTruthy();
@@ -35,16 +37,6 @@ test('allows the user to input username and password', () => {
   expect(getByTestId('confirmPasswordInput').props.value).toBe('password');
 });
 
-test('triggers a successful sign up alert when the correct credentials are entered', async () => {
-  const { getByTestId } = render(<SignUpScreen navigation={{ navigate: mockNavigate }} />);
-  fireEvent.changeText(getByTestId('emailInput'), 'test@gmail.com');
-  fireEvent.changeText(getByTestId('usernameInput'), 'admin');
-  fireEvent.changeText(getByTestId('passwordInput'), 'password');
-  fireEvent.changeText(getByTestId('confirmPasswordInput'), 'password');
-  await fireEvent.press(getByTestId('signUpButton'));  
-  expect(mockNavigate).toHaveBeenCalledWith('Login');
-  expect(Alert.alert).toHaveBeenCalledWith('Sign Up Successful', 'Account created: admin!');
-});
 
 test('triggers a failed sign up alert when different passwords are entered', async () => {
   const { getByTestId } = render(<SignUpScreen navigation={{ navigate: mockNavigate }} />);
@@ -68,6 +60,25 @@ test('triggers a failed sign up alert when no credentials are entered', async ()
     expect(Alert.alert).toHaveBeenCalledWith('Sign Up Failed', 'Please fill out all the fields');
 });
 
+test('allows the user to return to the login screen', async () => {
+    const { getByTestId } = render(<SignUpScreen navigation={{ navigate: mockNavigate }} />);
+    await fireEvent.press(getByTestId('loginButton'));
+    expect(mockNavigate).toHaveBeenCalledWith('Login');
+    expect(Alert.alert).toHaveBeenCalledWith('Returning to Login');
+});
+
+///Fail due to DB interaction 
+test('triggers a successful sign up alert when the correct credentials are entered', async () => {
+    const { getByTestId } = render(<SignUpScreen navigation={{ navigate: mockNavigate }} />);
+    fireEvent.changeText(getByTestId('emailInput'), 'test@gmail.com');
+    fireEvent.changeText(getByTestId('usernameInput'), 'admin');
+    fireEvent.changeText(getByTestId('passwordInput'), 'password');
+    fireEvent.changeText(getByTestId('confirmPasswordInput'), 'password');
+    await fireEvent.press(getByTestId('signUpButton'));  
+    expect(mockNavigate).toHaveBeenCalledWith('Login');
+    expect(Alert.alert).toHaveBeenCalledWith('Sign Up Successful', 'Account created: admin!');
+});
+  
 test('triggers a failed sign up alert when db fails to make an account', async () => {
     const { getByTestId } = render(<SignUpScreen navigation={{ navigate: mockNavigate }} />);
     fireEvent.changeText(getByTestId('emailInput'), 'test@gmail.com');
@@ -77,11 +88,4 @@ test('triggers a failed sign up alert when db fails to make an account', async (
     await fireEvent.press(getByTestId('signUpButton'));  
     expect(mockNavigate).not.toHaveBeenCalled();
     expect(Alert.alert).toHaveBeenCalledWith('Sign Up Failed', 'An error occured while creating the account');
-});
-
-test('allows the user to return to the login screen', async () => {
-    const { getByTestId } = render(<SignUpScreen navigation={{ navigate: mockNavigate }} />);
-    await fireEvent.press(getByTestId('loginButton'));
-    expect(mockNavigate).toHaveBeenCalledWith('Login');
-    expect(Alert.alert).toHaveBeenCalledWith('Returning to Login');
 });
