@@ -1,9 +1,16 @@
 import * as SQLite from 'expo-sqlite';
 
+let dbInstance = null;
+
+// Singleton pattern with openDatabaseAsync
 const openDatabase = async () => {
-  return await SQLite.openDatabaseAsync('statline.db');
+  if (!dbInstance) {
+    dbInstance = await SQLite.openDatabaseAsync('statline.db');
+  }
+  return dbInstance;
 };
 
+// Create necessary tables
 export const createTables = async () => {
   const db = await openDatabase();
 
@@ -43,15 +50,35 @@ export const createTables = async () => {
   console.log('Teams table created successfully');
 };
 
+// Insert a user into the users table
 export const insertUser = async (username, email, password) => {
   const db = await openDatabase();
-  await db.runAsync(
-    'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-    [username, email, password]
-  );
-  console.log('User inserted successfully');
+
+  try {
+    // Check if a user already exists
+    const existingUser = await db.getFirstAsync(
+      'SELECT * FROM users WHERE username = ? OR email = ?',
+      [username, email]
+    );
+
+    if (existingUser) {
+      console.log('User already exists:', existingUser);
+      throw new Error('User already exists with this username or email');
+    }
+
+    // If no user exists, insert the new user
+    await db.runAsync(
+      'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
+      [username, email, password]
+    );
+    console.log('User inserted successfully');
+  } catch (error) {
+    console.error('Error inserting user:', error);
+    throw error;
+  }
 };
 
+// Insert a league into the leagues table
 export const insertLeague = async (id, name, country, season, logo) => {
   const db = await openDatabase();
   try {
@@ -59,59 +86,189 @@ export const insertLeague = async (id, name, country, season, logo) => {
       'INSERT OR REPLACE INTO leagues (id, name, country, season, logo) VALUES (?, ?, ?, ?, ?)',
       [id, name, country, season, logo]
     );
-    console.log('League inserted successfully');
+    console.log(`League ${name} inserted successfully`);
   } catch (error) {
-    console.log('Error inserting league:', error);
+    console.error('Error inserting league:', error);
+    throw error;
   }
 };
 
+// Insert a new team into the teams table
 export const insertTeam = async (id, name, logo, founded, venue_name, venue_city, league_id) => {
   const db = await openDatabase();
-  await db.runAsync(
-    'INSERT INTO teams (id, name, logo, founded, venue_name, venue_city, league_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [id, name, logo, founded, venue_name, venue_city, league_id]
-  );
-  console.log('Team inserted successfully');
+  try {
+    await db.runAsync(
+      'INSERT INTO teams (id, name, logo, founded, venue_name, venue_city, league_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [id, name, logo, founded, venue_name, venue_city, league_id]
+    );
+    console.log('Team inserted successfully');
+  } catch (error) {
+    console.error('Error inserting team:', error);
+    throw error;
+  }
 };
-  
+
+// Fetch all users from the users table
 export const getUsers = async (setUsers) => {
   const db = await openDatabase();
-  const result = await db.execAsync('SELECT * FROM users');
-  setUsers(result.rows._array);
+  try {
+    const result = await db.getAllAsync('SELECT * FROM users');
+    setUsers(result); // Assuming setUsers is a state updater
+    console.log('Fetched users:', result);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error;
+  }
 };
 
+// Fetch all leagues from the leagues table
 export const getLeagues = async (setLeagues) => {
   const db = await openDatabase();
-  const result = await db.execAsync('SELECT * FROM leagues');
-  setLeagues(result.rows._array);
+  try {
+    const result = await db.getAllAsync('SELECT * FROM leagues');
+    setLeagues(result); // Assuming setLeagues is a state updater
+    console.log('Fetched leagues:', result);
+  } catch (error) {
+    console.error('Error fetching leagues:', error);
+    throw error;
+  }
 };
 
+// Fetch all teams by league ID from the teams table
 export const getTeamsByLeague = async (league_id, setTeams) => {
   const db = await openDatabase();
-  const result = await db.execAsync('SELECT * FROM teams WHERE league_id = ?', [league_id]);
-  setTeams(result.rows._array);
+  try {
+    const result = await db.getAllAsync('SELECT * FROM teams WHERE league_id = ?', [league_id]);
+    setTeams(result); // Assuming setTeams is a state updater
+    console.log('Fetched teams for league:', result);
+  } catch (error) {
+    console.error('Error fetching teams by league:', error);
+    throw error;
+  }
 };
 
+// Update an existing user in the users table
 export const updateUser = async (id, newUsername) => {
   const db = await openDatabase();
-  await db.runAsync('UPDATE users SET username = ? WHERE id = ?', [newUsername, id]);
-  console.log('User updated successfully');
+  try {
+    await db.runAsync('UPDATE users SET username = ? WHERE id = ?', [newUsername, id]);
+    console.log('User updated successfully');
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
 };
 
+// Delete a user from the users table
 export const deleteUser = async (id) => {
   const db = await openDatabase();
-  await db.runAsync('DELETE FROM users WHERE id = ?', [id]);
-  console.log('User deleted successfully');
+  try {
+    await db.runAsync('DELETE FROM users WHERE id = ?', [id]);
+    console.log('User deleted successfully');
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    throw error;
+  }
 };
 
+// Delete a league from the leagues table
 export const deleteLeague = async (id) => {
   const db = await openDatabase();
-  await db.runAsync('DELETE FROM leagues WHERE id = ?', [id]);
-  console.log('League deleted successfully');
+  try {
+    await db.runAsync('DELETE FROM leagues WHERE id = ?', [id]);
+    console.log('League deleted successfully');
+  } catch (error) {
+    console.error('Error deleting league:', error);
+    throw error;
+  }
 };
 
+// Delete a team from the teams table
 export const deleteTeam = async (id) => {
   const db = await openDatabase();
-  await db.runAsync('DELETE FROM teams WHERE id = ?', [id]);
-  console.log('Team deleted successfully');
+  try {
+    await db.runAsync('DELETE FROM teams WHERE id = ?', [id]);
+    console.log('Team deleted successfully');
+  } catch (error) {
+    console.error('Error deleting team:', error);
+    throw error;
+  }
+};
+
+// Check user credentials for login
+export const checkUserCredentials = async (username, password) => {
+  const db = await openDatabase();
+  try {
+    const result = await db.getFirstAsync(
+      'SELECT * FROM users WHERE username = ? AND password = ?',
+      [username, password]
+    );
+    console.log('Login query result:', result);
+    return result !== undefined;
+  } catch (error) {
+    console.error('Error checking user credentials:', error);
+    throw error;
+  }
+};
+
+// Fetch all users for logging
+export const getAllUsers = async () => {
+  const db = await openDatabase();
+  try {
+    const users = await db.getAllAsync('SELECT * FROM users');
+    console.log('All users:', users);
+    return users;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error;
+  }
+};
+
+// Delete duplicate users
+export const deleteDuplicateUsers = async () => {
+  const db = await openDatabase();
+  try {
+    await db.runAsync(`
+      DELETE FROM users 
+      WHERE id NOT IN (
+        SELECT MIN(id) 
+        FROM users 
+        GROUP BY username, email
+      );
+    `);
+    console.log('Duplicate users deleted successfully');
+  } catch (error) {
+    console.error('Error deleting duplicate users:', error);
+    throw error;
+  }
+};
+
+// Fetch only specific leagues by their IDs (39, 40)
+export const getSelectedLeagues = async (setLeagues) => {
+  const db = await openDatabase();
+  try {
+    const result = await db.getAllAsync('SELECT * FROM leagues WHERE id IN (39, 40)');
+    console.log('Fetched leagues from database:', result);
+
+    if (setLeagues) {
+      setLeagues(result || []);
+    }
+
+    return result || [];
+  } catch (error) {
+    console.error('Error fetching leagues from database:', error);
+    throw error;
+  }
+};
+
+// Delete all leagues
+export const deleteAllLeagues = async () => {
+  const db = await openDatabase();
+  try {
+    await db.runAsync('DELETE FROM leagues');
+    console.log('All leagues deleted successfully');
+  } catch (error) {
+    console.error('Error deleting leagues:', error);
+    throw error;
+  }
 };

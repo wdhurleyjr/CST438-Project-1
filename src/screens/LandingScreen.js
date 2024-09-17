@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Button, Image } from 'react-native';
 import { landingStyles as styles } from '../styles/LandingStyles';
 import { validateAndCallApi } from '../services/Managers/apiManager';
+import { getSelectedLeagues } from '../services/db';
 
 const LandingScreen = ({ navigation }) => {
   const [leagues, setLeagues] = useState([]);
 
-  const handleFetchLeagues = () => {
-    validateAndCallApi('leagues', 'leagues', {}, (fetchedLeagues) => {
-      setLeagues(fetchedLeagues); 
+  const handleFetchLeagues = async () => {
+    await validateAndCallApi('leagues', 'leagues', {}, async () => {
+      await getSelectedLeagues(setLeagues);
     });
   };
 
   useEffect(() => {
-    handleFetchLeagues(); 
+    handleFetchLeagues();
   }, []);
 
   const renderLeagueItem = ({ item }) => (
@@ -42,3 +43,7 @@ const LandingScreen = ({ navigation }) => {
 };
 
 export default LandingScreen;
+
+
+
+
