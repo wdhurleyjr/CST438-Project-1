@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Button, Image } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import { landingStyles as styles } from '../styles/LandingStyles';
 import { validateAndCallApi } from '../services/Managers/apiManager';
 import { getSelectedLeagues } from '../services/db';
@@ -17,32 +17,39 @@ const LandingScreen = ({ navigation }) => {
     handleFetchLeagues();
   }, []);
 
-  const renderLeagueItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('MultiTeam', { leagueId: item.id })}>
-      <View style={styles.leagueTile}>
-        <Image source={{ uri: item.logo }} style={styles.leagueLogo} />
-        <Text style={styles.itemText}>{item.name}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  const renderLeagueItem = ({ item }) => {
+    console.log(`Navigating to MultiTeamScreen with leagueId: ${item.id}`);
+    
+    return (
+      <TouchableOpacity onPress={() => navigation.navigate('MultiTeamScreen', { leagueId: item.id })}>
+        <View style={styles.leagueTile}>
+          <Image source={{ uri: item.logo }} style={styles.leagueLogo} />
+          <Text style={styles.itemText}>{item.name}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to StatLine!</Text>
-      <Text style={styles.subtitle}>Your go-to app for tracking soccer teams.</Text>
-      
       <FlatList
         data={leagues}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderLeagueItem}
       />
-
-      <Button title="Logout" onPress={() => navigation.navigate('Login')} />
+      <TouchableOpacity
+        style={styles.logoutButton} 
+        onPress={() => navigation.navigate('Login')}
+      >
+        <Text style={styles.buttonText}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 export default LandingScreen;
+
+
 
 
 

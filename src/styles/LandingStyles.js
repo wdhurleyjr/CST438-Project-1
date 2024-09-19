@@ -11,22 +11,22 @@ export const landingStyles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 16,
-    color: '#fff', 
+    color: '#fff',
   },
   subtitle: {
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 16,
-    color: '#fff', 
+    color: '#fff',
   },
   itemText: {
     fontSize: 18,
     marginTop: 8,
     textAlign: 'center',
-    color: '#fff', 
+    color: '#fff',
   },
   leagueTile: {
-    backgroundColor: '#BBBFCA', 
+    backgroundColor: '#BBBFCA',
     borderRadius: 12,
     padding: 16,
     marginVertical: 8,
@@ -38,13 +38,36 @@ export const landingStyles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 5, 
+    elevation: 5,
   },
   leagueLogo: {
-    width: 100, 
-    height: 100, 
-    resizeMode: 'contain', 
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
+  },
+  // New Styles for Logout Button
+  logoutButton: {
+    backgroundColor: '#BBBFCA',
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginVertical: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonText: {
+    color: '#495464',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
+
 
 

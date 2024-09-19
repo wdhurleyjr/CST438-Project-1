@@ -16,6 +16,8 @@ export const fetchAndStoreLeaguesIfNeeded = async (setLeagues) => {
       const response = await fetch('https://api-football-v1.p.rapidapi.com/v3/leagues?country=England', {
         method: 'GET',
         headers: {
+          'X-RapidAPI-Key': apiKey,
+          'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
         },
       });
       const data = await response.json();

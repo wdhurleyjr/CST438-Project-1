@@ -135,17 +135,18 @@ export const getLeagues = async (setLeagues) => {
 };
 
 // Fetch all teams by league ID from the teams table
-export const getTeamsByLeague = async (league_id, setTeams) => {
+export const getTeamsByLeague = async (league_id) => {
   const db = await openDatabase();
   try {
     const result = await db.getAllAsync('SELECT * FROM teams WHERE league_id = ?', [league_id]);
-    setTeams(result); // Assuming setTeams is a state updater
-    console.log('Fetched teams for league:', result);
+    return result;
   } catch (error) {
     console.error('Error fetching teams by league:', error);
-    throw error;
+    return []; // Return empty array if error occurs
   }
 };
+
+
 
 // Update an existing user in the users table
 export const updateUser = async (id, newUsername) => {
