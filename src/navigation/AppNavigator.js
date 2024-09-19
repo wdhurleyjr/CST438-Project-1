@@ -24,7 +24,7 @@ const AppNavigator = () => {
       <Stack.Screen
         name="PlayerScreen"
         component={PlayerScreen}
-        options={{ title: 'PlayerScreen' }}
+        options={{ title: 'Players' }}
       />
       <Stack.Screen 
         name="CreateAccount" 
