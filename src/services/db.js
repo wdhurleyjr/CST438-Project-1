@@ -48,20 +48,20 @@ export const createTables = async () => {
     );
   `);
   console.log('Teams table created successfully');
-};
 
-await db.execAsync(`
-  CREATE TABLE IF NOT EXISTS players (
-    id INTEGER PRIMARY KEY,           -- Player ID from API-FOOTBALL
-    name TEXT,                        -- Player name
-    position TEXT,                    -- Player position
-    nationality TEXT,                 -- Player nationality
-    age INTEGER,                      -- Player age
-    team_id INTEGER,                  -- Foreign key referencing the team
-    FOREIGN KEY(team_id) REFERENCES teams(id) ON DELETE CASCADE
-  );
-`);
-console.log('Players table created successfully');
+  await db.execAsync(`
+    CREATE TABLE IF NOT EXISTS players (
+      id INTEGER PRIMARY KEY,           -- Player ID from API-FOOTBALL
+      name TEXT,                        -- Player name
+      position TEXT,                    -- Player position
+      nationality TEXT,                 -- Player nationality
+      age INTEGER,                      -- Player age
+      team_id INTEGER,                  -- Foreign key referencing the team
+      FOREIGN KEY(team_id) REFERENCES teams(id) ON DELETE CASCADE
+    );
+  `);
+  console.log('Players table created successfully');
+};
 
 // Insert a user into the users table
 export const insertUser = async (username, email, password) => {
