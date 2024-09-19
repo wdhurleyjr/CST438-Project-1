@@ -4,6 +4,7 @@ import LoginScreen from '../screens/LoginScreen';
 import LandingScreen from '../screens/LandingScreen';
 import LeagueScreen from '../screens/LeagueScreen';
 import CreateAccountScreen from '../screens/CreateAccountScreen';
+import MultiTeamScreen from '../screens/MultiTeamScreen'
 
 const Stack = createStackNavigator();
 
@@ -18,7 +19,7 @@ const AppNavigator = () => {
       <Stack.Screen 
         name="Landing" 
         component={LandingScreen} 
-        options={{ title: 'Welcome' }} 
+        options={{ title: 'Welcome to StatLine!', headerLeft: null }} 
       />
       <Stack.Screen 
         name="Leagues" 
@@ -29,6 +30,11 @@ const AppNavigator = () => {
         name="CreateAccount" 
         component={CreateAccountScreen} 
         options={{ title: 'Create Account' }} 
+      />
+      <Stack.Screen
+        name="MultiTeamScreen"
+        component={MultiTeamScreen}
+        options={{ title: 'Teams'}}
       />
     </Stack.Navigator>
   );
