@@ -19,10 +19,8 @@ We got styling help for this document from [this guide](https://docs.github.com/
 
 ### Mason Allred
 
-- [a link to your pull requests]()
-- [a link to your issues]()
-- 1. Mason's pull requests are [here](https://github.com/Jonathan-Welham/Bits-Bots/pulls/@CarolDanvers)
-  2. Mason's Github issues are [here](https://github.com/FedericoRubino/cst438_project2/issues/created_by/@FedericoRubino)
+- 1. Mason's pull requests are [here](https://github.com/wdhurleyjr/CST438-Project-1/pulls?q=is%3Apr+author%3Amasona717)
+  2. Mason's Github issues are [here](https://github.com/wdhurleyjr/CST438-Project-1/issues?q=is%3Aissue+author%3Amasona717+)
 
 #### What was your role / which stories did you work on
 
@@ -35,10 +33,8 @@ We got styling help for this document from [this guide](https://docs.github.com/
 
 ### William Hurley
 
-- [a link to your pull requests]()
-- [a link to your issues]()
-- 1. William's pull requests are [here](https://github.com/Jonathan-Welham/Bits-Bots/pulls/@CarolDanvers)
-- 2. William's Github issues are [here](https://github.com/FedericoRubino/cst438_project2/issues/created_by/@FedericoRubino)
+- 1. William's pull requests are [here](https://github.com/wdhurleyjr/CST438-Project-1/pulls?q=is%3Apr+author%3Awdhurleyjr)
+- 2. William's Github issues are [here](https://github.com/wdhurleyjr/CST438-Project-1/issues?q=is%3Aissue+author%3Awdhurleyjr)
 
 #### What was your role / which stories did you work on
 
@@ -51,10 +47,8 @@ We got styling help for this document from [this guide](https://docs.github.com/
  
 ### Sebastian Santoyo
 
-- [a link to your pull requests]()
-- [a link to your issues]()
-- 1. Sebastian's pull requests are [here](https://github.com/Jonathan-Welham/Bits-Bots/pulls/@CarolDanvers)
-  2. Sebastian's Github issues are [here](https://github.com/FedericoRubino/cst438_project2/issues/created_by/@FedericoRubino)
+- 1. Sebastian's pull requests are [here](https://github.com/wdhurleyjr/CST438-Project-1/pulls?q=is%3Apr+author%3Asebasx5)
+  2. Sebastian's Github issues are [here](https://github.com/wdhurleyjr/CST438-Project-1/issues?q=is%3Aissue+author%3Asebasx5)
 
 #### What was your role / which stories did you work on
 
