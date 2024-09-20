@@ -273,3 +273,32 @@ export const deleteAllLeagues = async () => {
     throw error;
   }
 };
+
+// Fetch player info by player ID from the players table
+export const getPlayerInfoByPlayerId = async (player_id) => {
+  const db = await openDatabase();
+  try {
+    const result = await db.getAllAsync('SELECT * FROM players WHERE id = ?', [player_id]);
+    return result;
+  } catch (error) {
+    console.error('Error fetching player info by player Id:', error);
+    return []; // Return empty array if error occurs
+  }
+};
+
+// Insert a player into the players table
+//Should exist in another branch
+export const insertPlayer = async (id, name, country, season, logo) => {
+  const db = await openDatabase();
+  try {
+    await db.runAsync(
+      //TODO: Replace with player query
+      // 'INSERT OR REPLACE INTO players (id, name, country, season, logo) VALUES (?, ?, ?, ?, ?)',
+      // [id, name, country, season, logo]
+    );
+    console.log(`Player ${name} inserted successfully`);
+  } catch (error) {
+    console.error('Error inserting player:', error);
+    throw error;
+  }
+};

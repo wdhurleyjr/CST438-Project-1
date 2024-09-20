@@ -5,6 +5,7 @@ import LandingScreen from '../screens/LandingScreen';
 import LeagueScreen from '../screens/LeagueScreen';
 import CreateAccountScreen from '../screens/CreateAccountScreen';
 import MultiTeamScreen from '../screens/MultiTeamScreen'
+import PlayerInfoScreen from '../screens/PlayerInfoScreen';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,11 @@ const AppNavigator = () => {
         name="MultiTeamScreen"
         component={MultiTeamScreen}
         options={{ title: 'Teams'}}
+      />
+      <Stack.Screen
+        name="PlayerInfoScreen"
+        component={PlayerInfoScreen}
+        options={{ title: 'Player Info'}}
       />
     </Stack.Navigator>
   );
