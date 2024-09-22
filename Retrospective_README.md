@@ -1,6 +1,6 @@
 # Project 01 Retrospective and overview
 
-[Video Walkthrough](https://youtu.be/HCXP7fN90So) 
+[Video Walkthrough](https://youtu.be/HCXP7fN90So) <br/>
 [Github Repo](https://github.com/wdhurleyjr/CST438-Project-1)
 
 ## Overview
@@ -27,11 +27,15 @@ We got styling help for this document from [this guide](https://docs.github.com/
 #### What was your role / which stories did you work on
 
 + What was the biggest challenge? <br/>
-+ Why was it a challenge?
-  + How was the challenge addressed?<br/>
+My biggest challenges largely arose from my general lack of experience working with GitHub and implementing an API in a project of this nature with a group, which I have only done once before.
++ Why was it a challenge? How was the challenge addressed?<br/>
+  At several points, I ran into roadblocks with API implementation in which features of my work that seemingly were functioning as intended suddenly no longer did. I’ve never been the most efficient with debugging, but I failed to consider in this case how my own work would potentially be affected by the need to intermittently pull from the repository when my teammates reached their milestones for the project, and ended up encountering multiple setbacks that could have been mitigated by committing to my own branch whenever I successfully implemented a feature instead of clinging to prior poor habit of waiting to achieve a major milestone before saving my progress. I was ultimately able to resolve the largest issues that I encountered, and now have the requisite knowledge to overcome such obstacles more efficiently moving forward.
 + Favorite / most interesting part of this project<br/>
+  My favorite part of the project was frankly being able to see my portion of the app working as intended after the setbacks I experienced, even if what we ended up with was not quite as glamorous as originally envisioned.
 + If you could do it over, what would you change?<br/>
+  Knowing what I do now about how our project ended up, I would have reviewed the API’s documentation more thoroughly before starting my own work. Had I done so, I would not have had to endure as much backtracking to resolve issues with my code that stemmed from an incomplete understanding of the API’s functionality.
 + What is the most valuable thing you learned?<br/>
+  I have developed basic apps using Android Studio, used GitHub for a group project, and interfaced with APIs all before, but this was the first time I’ve experienced all of these in tandem. It was a valuable exercise in planning, communication, and problem solving that could have gone more smoothly in places, but the struggles I experienced here will aid me in the future.
 
 ### William Hurley
 
@@ -77,8 +81,7 @@ My role was to create and populate the team page and make the user stories for t
 
 ## Conclusion
 
-- How successful was the project?
-  - Think in terms of what did you set out to do and what actually got done?<br/>
+- How successful was the project? Think in terms of what did you set out to do and what actually got done?<br/>
   Overall the project was successful for the amount of time given. In three weeks we created a project that 
   allows a user to create an account, login, and view various soccer leagues and teams. We would have liked to 
   have more information about players shown and to allow the user to view the different games occurring that 
