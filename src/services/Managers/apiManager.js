@@ -1,5 +1,6 @@
 import { fetchAndStoreLeaguesIfNeeded } from '../api/leaguesApi';
 import { fetchAndStoreTeamsIfNeeded } from '../api/teamsApi';
+import { fetchAndStorePlayersIfNeeded } from '../api/playersApi';
 
 export const validateAndCallApi = async (token, apiType, params, setResults) => {
   if (isValidToken(token)) {
@@ -14,6 +15,13 @@ export const validateAndCallApi = async (token, apiType, params, setResults) => 
           await fetchAndStoreTeamsIfNeeded(params.leagueId, setResults);
         } else {
           console.error('Missing leagueId for teams API');
+        }
+        break;
+      case 'players':
+        if (params.teamId) {
+          await fetchAndStorePlayersIfNeeded(params.teamId, setResults);
+        } else {
+          console.error('Missing teamId for players API');
         }
         break;
       default:

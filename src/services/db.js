@@ -48,6 +48,20 @@ export const createTables = async () => {
     );
   `);
   console.log('Teams table created successfully');
+
+  await db.execAsync(`
+    CREATE TABLE IF NOT EXISTS players (
+      id INTEGER PRIMARY KEY,           -- Player ID from API-FOOTBALL
+      name TEXT,                        -- Player name
+      photo TEXT,                       -- URL for the player photo
+      position TEXT,                    -- Player position
+      nationality TEXT,                 -- Player nationality
+      age INTEGER,                      -- Player age
+      team_id INTEGER,                  -- Foreign key referencing the team
+      FOREIGN KEY(team_id) REFERENCES teams(id) ON DELETE CASCADE
+    );
+  `);
+  console.log('Players table created successfully');
 };
 
 // Insert a user into the users table
@@ -108,6 +122,21 @@ export const insertTeam = async (id, name, logo, founded, venue_name, venue_city
   }
 };
 
+// Insert a player into the players table
+export const insertPlayer = async (id, name, photo, position, nationality, age, team_id) => {
+  const db = await openDatabase();
+  try {
+    await db.runAsync(
+      'INSERT INTO players (id, name, photo, position, nationality, age, team_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [id, name, photo, position, nationality, age, team_id]
+    );
+    console.log('Player inserted successfully');
+  } catch (error) {
+    console.error('Error inserting player:', error);
+    throw error;
+  }
+};
+
 // Fetch all users from the users table
 export const getUsers = async (setUsers) => {
   const db = await openDatabase();
@@ -146,7 +175,17 @@ export const getTeamsByLeague = async (league_id) => {
   }
 };
 
-
+// Fetch all players by team ID from the players table
+export const getPlayersByTeam = async (team_id) => {
+  const db = await openDatabase();
+  try {
+    const result = await db.getAllAsync('SELECT * FROM players WHERE team_id = ?', [team_id]);
+    return result;
+  } catch (error) {
+    console.error('Error fetching players by team:', error);
+    return []; // Return empty array if error occurs
+  }
+};
 
 // Update an existing user in the users table
 export const updateUser = async (id, newUsername) => {
@@ -192,6 +231,18 @@ export const deleteTeam = async (id) => {
     console.log('Team deleted successfully');
   } catch (error) {
     console.error('Error deleting team:', error);
+    throw error;
+  }
+};
+
+// Delete a player from the players table
+export const deletePlayer = async (id) => {
+  const db = await openDatabase();
+  try {
+    await db.runAsync('DELETE FROM players WHERE id = ?', [id]);
+    console.log('Player deleted successfully');
+  } catch (error) {
+    console.error('Error deleting player:', error);
     throw error;
   }
 };
