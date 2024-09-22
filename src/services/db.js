@@ -53,6 +53,7 @@ export const createTables = async () => {
     CREATE TABLE IF NOT EXISTS players (
       id INTEGER PRIMARY KEY,           -- Player ID from API-FOOTBALL
       name TEXT,                        -- Player name
+      photo TEXT,                       -- URL for the player photo
       position TEXT,                    -- Player position
       nationality TEXT,                 -- Player nationality
       age INTEGER,                      -- Player age
@@ -122,12 +123,12 @@ export const insertTeam = async (id, name, logo, founded, venue_name, venue_city
 };
 
 // Insert a player into the players table
-export const insertPlayer = async (id, name, position, nationality, age, team_id) => {
+export const insertPlayer = async (id, name, photo, position, nationality, age, team_id) => {
   const db = await openDatabase();
   try {
     await db.runAsync(
-      'INSERT INTO players (id, name, position, nationality, age, team_id) VALUES (?, ?, ?, ?, ?, ?)',
-      [id, name, position, nationality, age, team_id]
+      'INSERT INTO players (id, name, photo, position, nationality, age, team_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [id, name, photo, position, nationality, age, team_id]
     );
     console.log('Player inserted successfully');
   } catch (error) {
@@ -230,6 +231,18 @@ export const deleteTeam = async (id) => {
     console.log('Team deleted successfully');
   } catch (error) {
     console.error('Error deleting team:', error);
+    throw error;
+  }
+};
+
+// Delete a player from the players table
+export const deletePlayer = async (id) => {
+  const db = await openDatabase();
+  try {
+    await db.runAsync('DELETE FROM players WHERE id = ?', [id]);
+    console.log('Player deleted successfully');
+  } catch (error) {
+    console.error('Error deleting player:', error);
     throw error;
   }
 };

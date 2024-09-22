@@ -5,9 +5,10 @@ import { PlayerStyles as styles } from '../styles/PlayerStyles';
 
 const PlayerScreen = ({ route }) => {
   const [players, setPlayers] = useState([]);
-  const { teamId } = route.params; // Receives the teamId from MultiTeamScreen
+  const { teamId } = route.params;
 
   const handleFetchPlayers = async () => {
+    console.log('Calling fetchAndStorePlayersIfNeeded with teamId:', teamId);
     await fetchAndStorePlayersIfNeeded(teamId, setPlayers);
   };
 

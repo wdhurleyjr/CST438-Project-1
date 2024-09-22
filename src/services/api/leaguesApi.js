@@ -1,7 +1,6 @@
 import { getSelectedLeagues, insertLeague } from '../db';
 
 const apiKey = '4a7813a829mshb8952297309bb32p1d35c1jsnc815c1dc5587';
-
 const apiUrl = 'https://api-football-v1.p.rapidapi.com/v3';
 
 const desiredLeagues = [39, 40];

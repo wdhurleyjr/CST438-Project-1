@@ -1,35 +1,33 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
-import LeagueScreen from '../src/screens/PlayerScreen';
+import { render } from '@testing-library/react-native';
+import PlayerScreen from '../src/screens/PlayerScreen';
 
-const mockNavigate = jest.fn();
+const mockPlayers = [
+  {
+    id: 1,
+    name: 'Lionel Messi',
+    photo: 'https://some-player-photo-url.png',
+    age: 34,
+    nationality: 'Argentina',
+    appearances: 30,
+    goals: 25,
+    assists: 5,
+  },
+];
 
-beforeEach(() => {
-  mockNavigate.mockClear();
+test('renders PlayerScreen correctly', () => {
+  const { getByText, getByTestId } = render(<PlayerScreen players={mockPlayers} />);
+
+  expect(getByText('Lionel Messi')).toBeTruthy();
+  expect(getByText('Age: 34')).toBeTruthy();
+  expect(getByText('Nationality: Argentina')).toBeTruthy();
+  expect(getByText('Appearances: 30')).toBeTruthy();
+  expect(getByText('Goals: 25')).toBeTruthy();
+  expect(getByText('Assists: 5')).toBeTruthy();
 });
 
-test('renders the League screen correctly', () => {
-  const { getByText } = render(<LeagueScreen navigation={{ navigate: mockNavigate }} />);
+test('handles empty player list correctly', () => {
+  const { getByText } = render(<PlayerScreen players={[]} />);
 
-  // Check if the title and league names are displayed
-  expect(getByText('Select a Football League')).toBeTruthy();
-  expect(getByText('Premier League')).toBeTruthy();
-  expect(getByText('La Liga')).toBeTruthy();
-  expect(getByText('Serie A')).toBeTruthy();
-  expect(getByText('Bundesliga')).toBeTruthy();
-  expect(getByText('Ligue 1')).toBeTruthy();
-});
-
-test('navigates to MultiTeam screen with the correct league ID when a league is selected', () => {
-  const { getByText } = render(<LeagueScreen navigation={{ navigate: mockNavigate }} />);
-
-  // Simulate pressing on a league (e.g., Premier League)
-  fireEvent.press(getByText('Premier League'));
-
-  // Ensure navigation to MultiTeam screen happens with the correct league ID
-  expect(mockNavigate).toHaveBeenCalledWith('MultiTeam', { leagueId: '1' });
-
-  // Simulate pressing on another league (e.g., La Liga)
-  fireEvent.press(getByText('La Liga'));
-  expect(mockNavigate).toHaveBeenCalledWith('MultiTeam', { leagueId: '2' });
+  expect(getByText('No players available')).toBeTruthy();
 });

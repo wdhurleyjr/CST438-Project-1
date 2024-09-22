@@ -35,7 +35,7 @@ export const PlayerStyles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
   },
-  playerImage: {
+  playerPhoto: {
     width: 60,
     height: 60,
     borderRadius: 30,
